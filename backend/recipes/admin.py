@@ -38,13 +38,6 @@ class RecipeAdmin(admin.ModelAdmin):
         return recipe.favorites_recipe.count()
 
 
-@admin.register(IngredientRecipe)
-class IngredientRecipeAdmin(admin.ModelAdmin):
-    list_display = ('id', 'recipe', 'ingredient', 'amount')
-    list_display_links = ('recipe',)
-    search_fields = ('recipe',)
-
-
 @admin.register(Favorite)
 class FavoriteAdmin(admin.ModelAdmin):
     list_display = ('user', 'recipe')
