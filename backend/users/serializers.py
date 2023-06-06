@@ -60,16 +60,6 @@ class UserSubscribtionsSerializer(UserGetSerializer):
             'recipes',
             'recipes_count',
         )
-        # Yo!
-        """read_only_fields = (
-            'email',
-            'username',
-            'first_name',
-            'last_name',
-            'is_subscribed',
-            'recipes',
-            'recipes_count',
-        )"""
 
     def get_recipes(self, obj):
         request = self.context.get('request')
