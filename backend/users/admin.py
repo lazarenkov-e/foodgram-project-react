@@ -11,7 +11,7 @@ class UserAdmin(admin.ModelAdmin):
         'first_name',
         'last_name',
     )
-    list_filter = ('email', 'username')
+    list_filter = ('username', 'email')
 
 
 @admin.register(Subscription)

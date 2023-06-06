@@ -13,7 +13,9 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         with open(
-            os.path.join(FILE_DIR, 'ingredients.json'), 'r', encoding='utf8'
+            os.path.join(FILE_DIR, 'ingredients.json'),
+            'r',
+            encoding='utf8',
         ) as file:
             data = json.load(file)
 

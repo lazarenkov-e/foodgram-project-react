@@ -26,16 +26,18 @@ class RecipeAdmin(admin.ModelAdmin):
         'id',
         'name',
         'author',
+        'added_to_favorites',
     )
-    list_filter = ('author', 'name', 'tags')
+    list_filter = ('name', 'author', 'tags')
     inlines = (IngredientRecipeAdmin,)
     autocomplete_fields = ('ingredients',)
+    readonly_fields = ('added_to_favorites',)
     search_fields = ('name',)
-    readonly_fields = ('favorite_count',)
 
-    @admin.display(description='Количество добавлений в избранное')
-    def favorite_count(self, recipe):
-        return recipe.favorites_recipe.count()
+    def added_to_favorites(self, obj):
+        return obj.favorites.count()
+
+    added_to_favorites.short_description = 'В избранном'
 
 
 @admin.register(Favorite)

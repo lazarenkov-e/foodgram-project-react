@@ -5,7 +5,9 @@ from users.models import User
 
 class Tag(models.Model):
     name = models.CharField(
-        verbose_name='Название', max_length=200, unique=True
+        verbose_name='Название',
+        max_length=200,
+        unique=True,
     )
     color = models.CharField(verbose_name='Цвет', max_length=7, unique=True)
     slug = models.SlugField(verbose_name='Слаг', max_length=200, unique=True)
@@ -68,8 +70,9 @@ class Recipe(models.Model):
         verbose_name='Время приготовления',
         validators=[
             validators.MinValueValidator(
-                1, 'Время приготовления не может быть меньше 1 минуты!'
-            )
+                1,
+                'Время приготовления не может быть меньше 1 минуты!',
+            ),
         ],
     )
 
@@ -99,8 +102,9 @@ class IngredientRecipe(models.Model):
         'Количество',
         validators=[
             validators.MinValueValidator(
-                1, 'Количество ингредиентов не может быть меньше 1!'
-            )
+                1,
+                'Количество ингредиентов не может быть меньше 1!',
+            ),
         ],
     )
 
@@ -148,8 +152,9 @@ class ShoppingCart(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                fields=['user', 'recipe'], name='unique_user_recipe_cart'
-            )
+                fields=['user', 'recipe'],
+                name='unique_user_recipe_cart',
+            ),
         ]
         verbose_name = 'Список покупок'
         verbose_name_plural = 'Списки покупок'
