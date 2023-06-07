@@ -1,12 +1,13 @@
 import base64
 
+from django.conf import settings
 from django.core.files.base import ContentFile
-from django.shortcuts import get_object_or_404
+from rest_framework import serializers, validators
+
 from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
                             ShoppingCart, Tag)
 from recipes.utils import create_ingredients
-from rest_framework import serializers, validators
-from users.models import Subscription, User
+from users.models import User
 
 
 class TagSerializer(serializers.ModelSerializer):
@@ -60,10 +61,8 @@ class AuthorSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         if request.user.is_anonymous:
             return False
-        return Subscription.objects.filter(
-            user=request.user,
-            author=obj.pk,
-        ).exists()
+        return request.user.follower.filter(
+            author=obj).exists()
 
     class Meta:
         model = User
@@ -118,7 +117,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         return (
             request
             and request.user.is_authenticated
-            and Favorite.objects.filter(user=request.user, recipe=obj).exists()
+            and request.user.favorites_user.filter(recipe=obj).exists()
         )
 
     def get_is_in_shopping_cart(self, obj):
@@ -126,10 +125,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         return (
             request
             and request.user.is_authenticated
-            and ShoppingCart.objects.filter(
-                user=request.user,
-                recipe=obj,
-            ).exists()
+            and request.user.carts.filter(recipe=obj).exists()
         )
 
 
@@ -158,9 +154,15 @@ class RecipeAddSerializer(serializers.ModelSerializer):
     def validate(self, data):
         ingredients_list = []
         for ingredient in data.get('ingredientsrecipe'):
-            if ingredient.get('amount') <= 0:
+            if ingredient.get('amount') <= settings.INGREDIENT_MIN_NUMBER:
                 raise serializers.ValidationError(
-                    'Количество ингредиентов не может быть меньше 1!',
+                    f'Количество ингредиентов не может быть'
+                    f' меньше {settings.INGREDIENT_MIN_NUMBER}!',
+                )
+            elif ingredient.get('amount') > settings.INGREDIENT_MAX_NUMBER:
+                raise serializers.ValidationError(
+                    f'Количество ингредиентов не может быть'
+                    f' больше {settings.INGREDIENT_MAX_NUMBER}!',
                 )
             ingredients_list.append(ingredient.get('id'))
         if len(set(ingredients_list)) != len(ingredients_list):
@@ -187,15 +189,13 @@ class RecipeAddSerializer(serializers.ModelSerializer):
         if ingredients is not None:
             instance.ingredients.clear()
 
-            for ingredient in ingredients:
-                amount = ingredient['amount']
-                ingredient = get_object_or_404(Ingredient, pk=ingredient['id'])
-
-                IngredientRecipe.objects.update_or_create(
+            IngredientRecipe.objects.bulk_create(
+                [IngredientRecipe(
                     recipe=instance,
-                    ingredient=ingredient,
-                    defaults={'amount': amount},
-                )
+                    ingredient=Ingredient.objects.get(pk=ingredient.get('id')),
+                    amount=ingredient['amount'],
+                ) for ingredient in ingredients])
+
         return super().update(instance, validated_data)
 
     def to_representation(self, instance):

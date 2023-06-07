@@ -1,6 +1,9 @@
 from django.db.models import Sum
 from django.shortcuts import HttpResponse, get_object_or_404
+from rest_framework import decorators, permissions, viewsets
+
 from django_filters.rest_framework import DjangoFilterBackend
+
 from recipes.filters import IngredientFilter, RecipeFilter
 from recipes.models import (Favorite, Ingredient, IngredientRecipe, Recipe,
                             ShoppingCart, Tag)
@@ -9,7 +12,6 @@ from recipes.serializers import (FavoriteSerializer, IngredientSerializer,
                                  RecipeAddSerializer, RecipeSerializer,
                                  ShoppingCartSerializer, TagSerializer)
 from recipes.utils import create_entity, delete_entity
-from rest_framework import decorators, permissions, viewsets
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
