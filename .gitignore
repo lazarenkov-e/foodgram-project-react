@@ -131,4 +131,4 @@ dmypy.json
 # .idea
 .idea
 frontend/node_modules/
-backend/foodgram/media/
+backend/media/
