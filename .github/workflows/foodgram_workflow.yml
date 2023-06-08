@@ -44,9 +44,9 @@ jobs:
     - name: Push to Docker Hub
       uses: docker/build-push-action@v2
       with:
-        context: ./api_yamdb
+        context: ./backend
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/yamdb:latest
+        tags: ${{ secrets.DOCKER_USERNAME }}/foodgram_backend:latest
 
   deploy:
     runs-on: ubuntu-latest
