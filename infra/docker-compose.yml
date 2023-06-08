@@ -9,12 +9,26 @@ services:
     env_file:
       - .env
 
-  frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+  backend:
+    container_name: foodgram-back
+    image: elazarenkov/foodgram_backend:latest
+    restart: always
     volumes:
-      - ../frontend/:/app/result_build/
+      - static_value:/app/static/
+      - media_value:/app/media/
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+  frontend:
+    container_name: foodgram-front
+    image: elazarenkov/foodgram_frontend:latest
+    volumes:
+      - ./frontend/:/app/result_build/
+    depends_on:
+      - backend
+
   nginx:
     image: nginx:1.19.3
     ports:
