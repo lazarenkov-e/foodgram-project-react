@@ -63,8 +63,8 @@ if DEBUG is True:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3'
-        }
+            'NAME': BASE_DIR / 'db.sqlite3',
+        },
     }
 else:
     DATABASES = {
@@ -74,8 +74,8 @@ else:
             'USER': os.getenv('POSTGRES_USER'),
             'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
             'HOST': os.getenv('DB_HOST'),
-            'PORT': os.getenv('DB_PORT')
-        }
+            'PORT': os.getenv('DB_PORT'),
+        },
     }
 
 AUTH_USER_MODEL = 'users.User'
