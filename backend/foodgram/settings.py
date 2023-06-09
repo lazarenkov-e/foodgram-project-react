@@ -74,8 +74,8 @@ else:
             'USER': os.getenv('POSTGRES_USER', 'postgres'),
             'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'postgres'),
             'HOST': os.getenv('DB_HOST', 'db'),
-            'PORT': os.getenv('DB_PORT', 5432)
-        }
+            'PORT': os.getenv('DB_PORT', 5432),
+        },
     }
 
 AUTH_USER_MODEL = 'users.User'
