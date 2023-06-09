@@ -72,7 +72,7 @@ jobs:
             echo DB_PORT=${{ secrets.DB_PORT }} >> .env
 
             sudo docker-compose stop
-            sudo docker compose rm -f backend
+            sudo docker compose rm backend
             sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/foodgram_backend
             sudo docker-compose up -d --build
             sudo docker-compose exec -T backend python manage.py collectstatic --no-input
