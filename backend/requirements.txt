@@ -21,7 +21,6 @@ flake8==6.0.0
 flake8-absolute-import==1.0.0.1
 flake8-commas==2.1.0
 flake8-quotes==3.3.2
-gunicorn==20.1.0
 idna==3.4
 isort==5.12.0
 itypes==1.2.0
@@ -32,9 +31,9 @@ mypy-extensions==1.0.0
 oauthlib==3.2.2
 packaging==23.1
 pathspec==0.11.1
-psycopg2-binary==2.9.6
 Pillow==9.5.0
 platformdirs==3.5.1
+psycopg2-binary==2.9.6
 pycodestyle==2.10.0
 pycparser==2.21
 pyflakes==3.0.1
