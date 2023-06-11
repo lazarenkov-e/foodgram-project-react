@@ -154,7 +154,7 @@ class RecipeAddSerializer(serializers.ModelSerializer):
     def validate(self, data):
         ingredients_list = []
         for ingredient in data.get('ingredientsrecipe'):
-            if ingredient.get('amount') <= settings.INGREDIENT_MIN_NUMBER:
+            if ingredient.get('amount') < settings.INGREDIENT_MIN_NUMBER:
                 raise serializers.ValidationError(
                     f'Количество ингредиентов не может быть'
                     f' меньше {settings.INGREDIENT_MIN_NUMBER}!',
