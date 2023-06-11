@@ -1,11 +1,7 @@
 import json
-import os
 
-from django.conf import settings
 from django.core.management import BaseCommand
 from recipes.models import Ingredient
-
-FILE_DIR = os.path.join(settings.BASE_DIR, '..', 'data')
 
 
 class Command(BaseCommand):
@@ -13,7 +9,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         with open(
-            os.path.join(FILE_DIR, 'ingredients.json'),
+            'recipes/data/ingredients.json',
             'r',
             encoding='utf8',
         ) as file:
